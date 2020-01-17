@@ -1,24 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+
 
 namespace AMB_Calculator
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         public int MonthDays { get; set; }
@@ -35,35 +21,20 @@ namespace AMB_Calculator
         {
             InitializeComponent();
 
+            //Debug_PreloadAccountData();
+        }
+        private void Initialize()
+        {
+            Transaction.SetIDGenSeed(0);
             logs = new ObservableCollection<Transaction>();
             TransactionListView.ItemsSource = logs;
             DataContext = this;
             DailyBalances = new ObservableCollection<DailyBalance>();
             DailyBalanceListView.ItemsSource = DailyBalances;
-
-            //Debug_PreloadAccountData();
         }
 
-        private void SubmitTransaction_Click(object sender, RoutedEventArgs e)
-        {
-            int tdate;
-            string ttype;
-            double amount;
 
-            int.TryParse(TransactionDate.Text, out tdate);
-            Double.TryParse(TransactionAmount.Text, out amount);
-            if (DebitRadioButton.IsChecked == true)
-            {
-                ttype = "Debit";
-            }
-            else
-            {
-                ttype = "Credit";
-            }
-            logs.Add(new Transaction(amount, tdate, ttype));
-            ComputeDailyBalances();
-        }
-
+        //Account Details Input
         private void SubmitDetails_Click(object sender, RoutedEventArgs e)
         {
             double dtemp;
@@ -85,9 +56,9 @@ namespace AMB_Calculator
             OpeningBalance = dtemp;
 
             DisplayAccountDetails();
-            DailyBalances.Clear();
+            Initialize();
+            ComputeDailyBalances();
         }
-
         private void DisplayAccountDetails()
         {
             MonthDaysDisplay.Text = "Number of Days in the Current Month = " + MonthDays;
@@ -96,11 +67,39 @@ namespace AMB_Calculator
             OpeningBalanceDisplay.Text = "Opening Balance = " + OpeningBalance;
             UpdateDateDisplay.Text = "Balance Last Updated Date = " + lastUpdatedDate;
         }
+        private void Debug_PreloadAccountData()
+        {
+            //Used to quickly preload data to help in debugging
+            DaysInput.Text = "31";
+            MinimumBalanceInput.Text = "10000";
+            BalanceInput.Text = "9110";
+            UpdateDateInput.Text = "14";
+            OpeningBalanceInput.Text = "14400";
+        }
 
+
+        //Transactions
+        private void SubmitTransaction_Click(object sender, RoutedEventArgs e)
+        {
+            int tdate;
+            string ttype;
+            double amount;
+
+            int.TryParse(TransactionDate.Text, out tdate);
+            Double.TryParse(TransactionAmount.Text, out amount);
+            if (DebitRadioButton.IsChecked == true)
+            {
+                ttype = "Debit";
+            }
+            else
+            {
+                ttype = "Credit";
+            }
+            logs.Add(new Transaction(amount, tdate, ttype));
+            ComputeDailyBalances();
+        }
         private void DisplayAMBDetails()
         {
-
-
             AverageMonthlyBalanceDisplay.Text = "Average Monthly Balance = " + AverageBalance;
 
             if (AverageBalance > MinimumBalance)
@@ -114,17 +113,7 @@ namespace AMB_Calculator
                 AverageMonthlyBalanceAdviveDisplay.Text = "You are maintaining " + Shortfall + " less than the minimum balance";
             }
         }
-        private void Debug_PreloadAccountData()
-        {
-            //Used to quickly preload data to help in debugging
-            MonthDays = 30;
-            MinimumBalance = 5000;
-            ClosingBalance = 2000;
-            OpeningBalance = 1000;
-            lastUpdatedDate = 30;
 
-            DisplayAccountDetails();
-        }
         private void ComputeDailyBalances()
         {
             double CurrentDayBalance;
@@ -167,9 +156,30 @@ namespace AMB_Calculator
             }
             AverageBalance = TotalBalance / MonthDays;
             DisplayAMBDetails();
-
             DailyBalanceListView.ItemsSource = DailyBalances;
         }
 
+
+        //Basic QoL Features
+        private void ButtonMinimumBalance2000_Click(object sender, RoutedEventArgs e)
+        {
+            MinimumBalanceInput.Text = "2000";
+        }
+        private void ButtonMinimumBalance10000_Click(object sender, RoutedEventArgs e)
+        {
+            MinimumBalanceInput.Text = "10000";
+        }
+        private void ButtonDays30_Click(object sender, RoutedEventArgs e)
+        {
+            DaysInput.Text = "30";
+        }
+        private void ButtonDays31_Click(object sender, RoutedEventArgs e)
+        {
+            DaysInput.Text = "31";
+        }
+        private void ButtonUpdateDateToday_Click(object sender, RoutedEventArgs e)
+        {
+            UpdateDateInput.Text = DateTime.Now.Day.ToString();
+        }
     }
 }

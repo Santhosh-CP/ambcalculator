@@ -6,6 +6,14 @@
         xmlns:local="clr-namespace:AMB_Calculator"
         mc:Ignorable="d"
         Title="MainWindow" Height="800" Width="1200">
+
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="0,20,20,0"></Setter>
+            <Setter Property="Width" Value="75"></Setter>
+        </Style>
+    </Window.Resources>
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20"></ColumnDefinition>
@@ -42,13 +50,15 @@
         <!--Row 2-->
         <TextBlock Grid.Row="2" Grid.Column="1" Text="Number of days in current month" Margin="0,20,20,0"></TextBlock>
         <TextBox x:Name="DaysInput" Grid.Row="2" Grid.Column="2" Width="50" Margin="0,20,20,0"></TextBox>
-        <Button x:Name="DayThirty" Grid.Row="2" Grid.Column="3" Width="75" Content="30th" Margin="0,20,20,0"></Button>
-        <Button x:Name="DayThirtyOne" Grid.Row="2" Grid.Column="4" Width="75" Content="31st" Margin="0,20,20,0"></Button>
+        <Button x:Name="ButtonDays30" Grid.Row="2" Grid.Column="3" Content="30th" Click="ButtonDays30_Click"></Button>
+        <Button x:Name="ButtonDays31" Grid.Row="2" Grid.Column="4" Content="31st" Click="ButtonDays31_Click"></Button>
         <TextBlock x:Name="MonthDaysDisplay" Grid.Row="2" Grid.Column="5" Margin="0,20,20,0"></TextBlock>
 
         <!--Row 3-->
         <TextBlock Grid.Row="3" Grid.Column="1" Text="Minimum Balance" Margin="0,20,20,0"></TextBlock>
         <TextBox x:Name="MinimumBalanceInput" Grid.Row="3" Grid.Column="2" Width="50" Margin="0,20,20,0"></TextBox>
+        <Button x:Name="ButtonMinimumBalance2000" Grid.Row="3" Grid.Column="3" Content="2000" Click="ButtonMinimumBalance2000_Click"></Button>
+        <Button x:Name="ButtonMinimumBalance10000" Grid.Row="3" Grid.Column="4" Content="10000" Click="ButtonMinimumBalance10000_Click"></Button>
         <TextBlock x:Name="MinimumBalanceDisplay" Grid.Row="3" Grid.Column="5" Margin="0,20,20,0"></TextBlock>
 
         <!--Row 4-->
@@ -64,11 +74,11 @@
         <!--Row 6-->
         <TextBlock Grid.Row="6" Grid.Column="1" Text="Balance last updated checked" Margin="0,20,20,0"></TextBlock>
         <TextBox x:Name="UpdateDateInput" Grid.Row="6" Grid.Column="2" Width="50" Margin="0,20,20,0"></TextBox>
-        <Button x:Name="Today" Grid.Row="6" Grid.Column="3" Content="Today" Margin="0,20,20,0"></Button>
+        <Button x:Name="ButtonUpdateDateToday" Grid.Row="6" Grid.Column="3" Content="Today" Click="ButtonUpdateDateToday_Click"></Button>
         <TextBlock x:Name="UpdateDateDisplay" Grid.Row="6" Grid.Column="5" Margin="0,20,20,0"></TextBlock>
 
         <!--Row 7-->
-        <Button x:Name="SubmitDetails" Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="3" Content="Submit" Width="75" Margin="0,20,20,0" Click="SubmitDetails_Click"></Button>
+        <Button x:Name="SubmitDetails" Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="3" Content="Submit" Click="SubmitDetails_Click"></Button>
 
         <!--Row 8-->
         <TextBlock Grid.Row="8" Grid.Column="1" Text="Enter the Transaction details from the first date of month" Margin="0,20,20,0"></TextBlock>
@@ -82,14 +92,14 @@
         <TextBlock Grid.Row="10" Grid.Column="1" Text="Enter transaction date" Margin="0,20,20,0"></TextBlock>
         <TextBox x:Name="TransactionDate" Grid.Row="10" Grid.Column="2" Margin="0,20,20,0"></TextBox>
         <TextBlock x:Name="AverageMonthlyBalanceAdviveDisplay" Grid.Row="10" Grid.Column="5" Margin="0,20,20,0"></TextBlock>
-        
+
         <!--Row 11-->
         <TextBlock Grid.Row="11" Grid.Column="1" Text="Enter Transation type" Margin="0,20,20,0"></TextBlock>
         <RadioButton x:Name="DebitRadioButton" Grid.Row="11" Grid.Column="2" Content="Debit" Margin="0,20,20,0"></RadioButton>
         <RadioButton x:Name="CreditRadioButton" Grid.Row="11" Grid.Column="3" Content="Credit" Margin="0,20,20,0"></RadioButton>
 
         <!--Row 12-->
-        <Button x:Name="SubmitTransaction" Grid.Row="12" Grid.Column="1" Grid.ColumnSpan="3" Content="Submit" Width="75" Margin="0,20,20,0" Click="SubmitTransaction_Click"></Button>
+        <Button x:Name="SubmitTransaction" Grid.Row="12" Grid.Column="1" Grid.ColumnSpan="3" Content="Submit" Click="SubmitTransaction_Click"></Button>
 
         <!--Row 13-->
         <TextBlock Grid.Row="13" Grid.Column="1" Text="Transactions are:-" Margin="0,20,20,0"></TextBlock>
@@ -99,7 +109,7 @@
         <ListView x:Name="TransactionListView" ItemsSource="{Binding logs}" Grid.Row="14" Grid.Column="1" Grid.ColumnSpan="3" MinHeight="250" MinWidth="500" MaxHeight="250" MaxWidth="500" Margin="0,20,20,0" ScrollViewer.VerticalScrollBarVisibility="Visible">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn DisplayMemberBinding="{Binding id}" Header="ID" Width="30"></GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding ID}" Header="ID" Width="30"></GridViewColumn>
                     <GridViewColumn DisplayMemberBinding="{Binding tdate}" Header="Date" Width="75"></GridViewColumn>
                     <GridViewColumn DisplayMemberBinding="{Binding amount}" Header="Amount" Width="100"></GridViewColumn>
                     <GridViewColumn DisplayMemberBinding="{Binding ttype}" Header="Type" Width="100"></GridViewColumn>
