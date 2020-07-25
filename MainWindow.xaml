@@ -109,12 +109,13 @@
         <!--Row 10-->
         <TextBlock Grid.Row="10" Grid.Column="1" Text="Enter transaction date"></TextBlock>
         <TextBox x:Name="TransactionDate" Grid.Row="10" Grid.Column="2"></TextBox>
-        <TextBlock x:Name="AverageMonthlyBalanceAdviveDisplay" Grid.Row="10" Grid.Column="5"></TextBlock>
+        <TextBlock x:Name="AverageMonthlyBalanceAdviceDisplay" Grid.Row="10" Grid.Column="5"></TextBlock>
 
         <!--Row 11-->
         <TextBlock Grid.Row="11" Grid.Column="1" Text="Enter Transation type"></TextBlock>
         <RadioButton x:Name="DebitRadioButton" Grid.Row="11" Grid.Column="2" Content="Debit"></RadioButton>
         <RadioButton x:Name="CreditRadioButton" Grid.Row="11" Grid.Column="3" Content="Credit"></RadioButton>
+        <TextBlock x:Name="AverageMonthlyBalanceAdditionNeeded" Grid.Row="11" Grid.Column="5"></TextBlock>
 
         <!--Row 12-->
         <Button x:Name="SubmitTransaction" Grid.Row="12" Grid.Column="1" Grid.ColumnSpan="3" Content="Submit" Click="SubmitTransaction_Click"></Button>

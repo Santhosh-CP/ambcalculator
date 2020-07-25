@@ -105,12 +105,15 @@ namespace AMB_Calculator
             if (AverageBalance > MinimumBalance)
             {
                 double Excess = AverageBalance - MinimumBalance;
-                AverageMonthlyBalanceAdviveDisplay.Text = "You are maintaining " + Excess + " more than the minimum balance";
+                AverageMonthlyBalanceAdviceDisplay.Text = "You are maintaining " + Excess + " more than the minimum balance";
+
             }
             else
             {
                 double Shortfall = MinimumBalance - AverageBalance;
-                AverageMonthlyBalanceAdviveDisplay.Text = "You are maintaining " + Shortfall + " less than the minimum balance";
+                double required = Math.Round(computeRequiredAddition(), 2);
+                AverageMonthlyBalanceAdviceDisplay.Text = "You are maintaining " + Shortfall + " less than the minimum balance";
+                AverageMonthlyBalanceAdditionNeeded.Text = "You need to add atleast " + required + " today to meet the AMB requirements";
             }
         }
 
@@ -159,6 +162,31 @@ namespace AMB_Calculator
             DailyBalanceListView.ItemsSource = DailyBalances;
         }
 
+        private double computeRequiredAddition()
+        {
+            double RequiredDailyBalanceTotal;
+            double CurrentDailyBalanceTotal = 0;
+            double DailyBalanceTotalShortfall;
+            double RequiredAddition = 0;
+            int TodayDate;
+            int RemainingDays;
+
+            RequiredDailyBalanceTotal = MonthDays * MinimumBalance;
+            TodayDate = DateTime.Now.Day;
+            RemainingDays = MonthDays - TodayDate;
+            foreach (DailyBalance db in DailyBalances)
+            {
+                CurrentDailyBalanceTotal += db.balance;
+            }
+            DailyBalanceTotalShortfall = RequiredDailyBalanceTotal - CurrentDailyBalanceTotal;
+
+            if (DailyBalanceTotalShortfall > 0)
+            {
+                // Currently maintained AMB so far is less than the required amount
+                RequiredAddition = DailyBalanceTotalShortfall / RemainingDays;
+            }
+            return RequiredAddition;
+        }
 
         //Basic QoL Features
         private void ButtonMinimumBalance2000_Click(object sender, RoutedEventArgs e)
