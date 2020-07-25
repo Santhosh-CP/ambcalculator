@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AMB_Calculator"
         mc:Ignorable="d"
-        Title="MainWindow" Height="800" Width="1200">
+        Title="MainWindow" Height="860" Width="1200">
 
     <Window.Resources>
         <Style TargetType="Button">
@@ -30,7 +30,10 @@
         </Style>
     </Window.Resources>
 
+
     <Grid>
+
+
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20"></ColumnDefinition>
             <ColumnDefinition Width="auto"></ColumnDefinition>
@@ -44,7 +47,8 @@
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="20"></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
             <RowDefinition Height="auto"></RowDefinition>
             <RowDefinition Height="auto"></RowDefinition>
             <RowDefinition Height="auto"></RowDefinition>
@@ -64,19 +68,23 @@
         </Grid.RowDefinitions>
 
         <!--Row 1 has been saved for future entries-->
+        <Menu Grid.Row="0" Grid.Column="0"  Grid.ColumnSpan="2" VerticalContentAlignment="Top">
+            <MenuItem Header="_File" Grid.ColumnSpan="2" VerticalContentAlignment="Top"></MenuItem>
+            <MenuItem Header="_About"  Grid.ColumnSpan="2" VerticalContentAlignment="Top"></MenuItem>
+        </Menu>
 
         <!--Row 2-->
         <TextBlock Grid.Row="2" Grid.Column="1" Text="Number of days in current month"></TextBlock>
         <TextBox x:Name="DaysInput" Grid.Row="2" Grid.Column="2" Width="50"></TextBox>
-        <Button x:Name="ButtonDays30" Grid.Row="2" Grid.Column="3" Content="30th" Click="ButtonDays30_Click"></Button>
-        <Button x:Name="ButtonDays31" Grid.Row="2" Grid.Column="4" Content="31st" Click="ButtonDays31_Click"></Button>
+        <Button x:Name="ButtonDays30" Grid.Row="2" Grid.Column="3" Content="30" Click="ButtonDays30_Click"></Button>
+        <Button x:Name="ButtonDays31" Grid.Row="2" Grid.Column="4" Content="31" Click="ButtonDays31_Click"></Button>
         <TextBlock x:Name="MonthDaysDisplay" Grid.Row="2" Grid.Column="5"></TextBlock>
 
         <!--Row 3-->
         <TextBlock Grid.Row="3" Grid.Column="1" Text="Minimum Balance"></TextBlock>
         <TextBox x:Name="MinimumBalanceInput" Grid.Row="3" Grid.Column="2" Width="50"></TextBox>
-        <Button x:Name="ButtonMinimumBalance2000" Grid.Row="3" Grid.Column="3" Content="2000" Click="ButtonMinimumBalance2000_Click"></Button>
-        <Button x:Name="ButtonMinimumBalance10000" Grid.Row="3" Grid.Column="4" Content="10000" Click="ButtonMinimumBalance10000_Click"></Button>
+        <Button x:Name="ButtonMBAdd1000" Grid.Row="3" Grid.Column="3" Content="+ 1000" Click="ButtonMBAdd1000_Click"></Button>
+        <Button x:Name="ButtonMBAdd5000" Grid.Row="3" Grid.Column="4" Content="+ 5000" Click="ButtonMBAdd5000_Click"></Button>
         <TextBlock x:Name="MinimumBalanceDisplay" Grid.Row="3" Grid.Column="5"></TextBlock>
 
         <!--Row 4-->
@@ -113,9 +121,9 @@
 
         <!--Row 11-->
         <TextBlock Grid.Row="11" Grid.Column="1" Text="Enter Transation type"></TextBlock>
-        <RadioButton x:Name="DebitRadioButton" Grid.Row="11" Grid.Column="2" Content="Debit"></RadioButton>
-        <RadioButton x:Name="CreditRadioButton" Grid.Row="11" Grid.Column="3" Content="Credit"></RadioButton>
-        <TextBlock x:Name="AverageMonthlyBalanceAdditionNeeded" Grid.Row="11" Grid.Column="5"></TextBlock>
+        <RadioButton x:Name="DebitRadioButton" Grid.Row="11" Grid.Column="2" Content="Debit" ></RadioButton>
+        <RadioButton x:Name="CreditRadioButton" Grid.Row="11" Grid.Column="3" Content="Credit" VerticalAlignment="Bottom"></RadioButton>
+        <TextBlock x:Name="AverageMonthlyBalanceAdditionNeeded" Grid.Row="11" Grid.Column="5" VerticalAlignment="Bottom"></TextBlock>
 
         <!--Row 12-->
         <Button x:Name="SubmitTransaction" Grid.Row="12" Grid.Column="1" Grid.ColumnSpan="3" Content="Submit" Click="SubmitTransaction_Click"></Button>
@@ -144,5 +152,8 @@
                 </GridView>
             </ListView.View>
         </ListView>
+
+        <!--Row 15-->
+        <TextBlock x:Name="TextBlockStatus" Grid.Row="15" Grid.Column="1" Text="" Grid.ColumnSpan="3" HorizontalAlignment="Center"></TextBlock>
     </Grid>
 </Window>

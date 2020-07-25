@@ -2,6 +2,15 @@
 using System.Collections.ObjectModel;
 using System.Windows;
 
+/*
+    AMB Calculator
+    Created by Santhosh C P
+
+    Bugs, Further Improvements:-
+    * Fix the top Menu alignment
+    * Add functionality to the MenuItems
+ */
+
 
 namespace AMB_Calculator
 {
@@ -20,8 +29,6 @@ namespace AMB_Calculator
         public MainWindow()
         {
             InitializeComponent();
-
-            //Debug_PreloadAccountData();
         }
         private void Initialize()
         {
@@ -67,15 +74,6 @@ namespace AMB_Calculator
             OpeningBalanceDisplay.Text = "Opening Balance = " + OpeningBalance;
             UpdateDateDisplay.Text = "Balance Last Updated Date = " + lastUpdatedDate;
         }
-        private void Debug_PreloadAccountData()
-        {
-            //Used to quickly preload data to help in debugging
-            DaysInput.Text = "31";
-            MinimumBalanceInput.Text = "10000";
-            BalanceInput.Text = "9110";
-            UpdateDateInput.Text = "14";
-            OpeningBalanceInput.Text = "14400";
-        }
 
 
         //Transactions
@@ -86,6 +84,12 @@ namespace AMB_Calculator
             double amount;
 
             int.TryParse(TransactionDate.Text, out tdate);
+            if ((tdate <= 0) || (tdate > MonthDays))
+            {
+                // If a valid transaction date is not provided, the transaction date is assumed to be 'today'
+                tdate = DateTime.Now.Day;
+                TransactionDate.Text = DateTime.Now.Day.ToString();
+            }
             Double.TryParse(TransactionAmount.Text, out amount);
             if (DebitRadioButton.IsChecked == true)
             {
@@ -95,8 +99,16 @@ namespace AMB_Calculator
             {
                 ttype = "Credit";
             }
-            logs.Add(new Transaction(amount, tdate, ttype));
-            ComputeDailyBalances();
+
+            try
+            {
+                logs.Add(new Transaction(amount, tdate, ttype));
+                ComputeDailyBalances();
+            }
+            catch (NullReferenceException)
+            {
+                TextBlockStatus.Text = "Please enter the account details first";
+            }
         }
         private void DisplayAMBDetails()
         {
@@ -106,14 +118,14 @@ namespace AMB_Calculator
             {
                 double Excess = AverageBalance - MinimumBalance;
                 AverageMonthlyBalanceAdviceDisplay.Text = "You are maintaining " + Excess + " more than the minimum balance";
-
+                AverageMonthlyBalanceAdditionNeeded.Text = "";
             }
             else
             {
                 double Shortfall = MinimumBalance - AverageBalance;
                 double required = Math.Round(computeRequiredAddition(), 2);
                 AverageMonthlyBalanceAdviceDisplay.Text = "You are maintaining " + Shortfall + " less than the minimum balance";
-                AverageMonthlyBalanceAdditionNeeded.Text = "You need to add atleast " + required + " today to meet the AMB requirements";
+                AverageMonthlyBalanceAdditionNeeded.Text = "You need to add atleast " + required + " today and maintain the balance to meet the AMB requirements";
             }
         }
 
@@ -139,11 +151,11 @@ namespace AMB_Calculator
                     {
                         if (transaction.ttype == "Debit")
                         {
-                            CurrentDayBalance = CurrentDayBalance - transaction.amount;
+                            CurrentDayBalance -= transaction.amount;
                         }
                         else
                         {
-                            CurrentDayBalance = CurrentDayBalance + transaction.amount;
+                            CurrentDayBalance += transaction.amount;
                         }
 
                         if (LeastDailyBal[CurrentDate] > CurrentDayBalance)
@@ -161,7 +173,6 @@ namespace AMB_Calculator
             DisplayAMBDetails();
             DailyBalanceListView.ItemsSource = DailyBalances;
         }
-
         private double computeRequiredAddition()
         {
             double RequiredDailyBalanceTotal;
@@ -189,13 +200,21 @@ namespace AMB_Calculator
         }
 
         //Basic QoL Features
-        private void ButtonMinimumBalance2000_Click(object sender, RoutedEventArgs e)
+        private void ButtonMBAdd1000_Click(object sender, RoutedEventArgs e)
         {
-            MinimumBalanceInput.Text = "2000";
+            int value;
+
+            int.TryParse(MinimumBalanceInput.Text, out value);
+            value += 1000;
+            MinimumBalanceInput.Text = value.ToString();
         }
-        private void ButtonMinimumBalance10000_Click(object sender, RoutedEventArgs e)
+        private void ButtonMBAdd5000_Click(object sender, RoutedEventArgs e)
         {
-            MinimumBalanceInput.Text = "10000";
+            int value;
+
+            int.TryParse(MinimumBalanceInput.Text, out value);
+            value += 5000;
+            MinimumBalanceInput.Text = value.ToString();
         }
         private void ButtonDays30_Click(object sender, RoutedEventArgs e)
         {
